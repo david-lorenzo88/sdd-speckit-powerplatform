@@ -1,0 +1,17 @@
+# Azure Boards sync (SpecKit extension "ado")
+# Copy to .specify/extensions/ado/ado-config.yml. Put personal overrides in ado-config.local.yml (gitignored).
+# Environment variables override any value: SPECKIT_ADO_ORGANIZATION, SPECKIT_ADO_PROJECT, SPECKIT_ADO_AREAPATH, ...
+# Never store tokens in this file. Authentication: az login, AZURE_DEVOPS_EXT_PAT or SYSTEM_ACCESSTOKEN (pipelines).
+
+organization: ""          # organization name (contoso) or full URL (https://dev.azure.com/contoso)
+project: ""               # project name, Agile process
+areaPath: ""              # optional, e.g. "My Project\Power Platform"
+iterationPath: ""         # optional, e.g. "My Project\Sprint 12"
+repoUrl: ""               # optional, links work items to spec.md / tasks.md (Azure Repos or GitHub URL)
+branch: ""                # optional, branch used in links (default: current branch)
+tags: "speckit"           # tags added to every work item
+
+# States (Agile process)
+taskDoneState: "Closed"
+storyDoneState: "Resolved"    # all tasks done -> Resolved; a person closes it after acceptance
+featureDoneState: "Resolved"

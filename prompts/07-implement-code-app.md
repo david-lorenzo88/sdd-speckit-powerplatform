@@ -1,0 +1,1 @@
+/speckit-implement Ejecuta solo las tareas de la historia US1 (registrar solicitud): Code App con formulario validado que crea filas en ppn_solicitudcontacto, prueba local con "pa app run" y despliegue con "pa app push --solution-id" en la solución SolicitudesContacto.

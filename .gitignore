@@ -1,0 +1,11 @@
+# SpecKit local overrides
+*.local.yml
+# Demo outputs
+out/
+.demo/
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/
+# Python
+__pycache__/

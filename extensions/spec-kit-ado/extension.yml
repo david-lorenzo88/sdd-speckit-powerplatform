@@ -1,0 +1,45 @@
+schema_version: "1.0"
+
+extension:
+  id: "ado"
+  name: "Azure Boards Sync"
+  version: "1.0.0"
+  description: "One-way sync from SpecKit specs and tasks to Azure Boards (Agile): Feature, User Story and Task, with states driven by tasks.md."
+  author: "David Lorenzo López"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=1.0.0"
+  commands:
+    - "speckit.tasks"
+
+provides:
+  commands:
+    - name: "speckit.ado.setup"
+      file: "commands/setup.md"
+      description: "Configure the Azure DevOps organization, project, area and iteration, and test the connection"
+    - name: "speckit.ado.sync"
+      file: "commands/sync.md"
+      description: "Create or update the Azure Boards work items of the current feature and sync their states"
+
+  config:
+    - name: "ado-config.yml"
+      template: "ado-config.template.yml"
+      description: "Azure DevOps organization, project, area path, iteration path and repository URL"
+      required: false
+
+hooks:
+  after_tasks:
+    command: "speckit.ado.sync"
+    optional: true
+    prompt: "Create or update the Azure Boards work items for this feature?"
+    description: "Create the Feature, User Stories and Tasks in Azure Boards"
+  after_implement:
+    command: "speckit.ado.sync"
+    optional: false
+    description: "Update Azure Boards states from the tasks.md checkboxes"
+
+tags:
+  - "azure-devops"
+  - "azure-boards"
+  - "project-management"

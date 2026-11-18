@@ -1,0 +1,1 @@
+/speckit-implement Ejecuta solo las tareas de la historia US2 (notificar a preventa): flujo automatizado dentro de la solución SolicitudesContacto, con connection references y el destinatario tomado de la variable de entorno ppn_DestinatarioPreventa.

@@ -1,0 +1,43 @@
+# Keeps Azure Boards in sync with SpecKit on every push that changes a spec or a task list.
+# Requirements (Azure Repos):
+#   - The project build service identity can edit work items in the configured area path.
+#   - To persist new work item IDs (ado.json), the build service needs "Contribute" on the repository.
+# For GitHub repositories, remove the "Persist work item mapping" step and run /speckit-ado-sync locally instead.
+
+trigger:
+  branches:
+    include: ['*']
+  paths:
+    include:
+      - specs/*/tasks.md
+      - specs/*/spec.md
+
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+    persistCredentials: true
+
+  - pwsh: |
+      $script = './.specify/extensions/ado/scripts/powershell/ado-sync.ps1'
+      $features = Get-ChildItem specs -Directory | Where-Object { Test-Path (Join-Path $_.FullName 'tasks.md') }
+      foreach ($f in $features) {
+        Write-Host "##[group]$($f.Name)"
+        & $script -FeatureDir "specs/$($f.Name)"
+        if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) { throw "Sync failed for $($f.Name)" }
+        Write-Host "##[endgroup]"
+      }
+    displayName: Sync SpecKit to Azure Boards
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
+  - pwsh: |
+      git add specs/*/ado.json
+      git diff --cached --quiet
+      if ($LASTEXITCODE -eq 0) { Write-Host 'No mapping changes.'; exit 0 }
+      git -c user.email='speckit-ado@pipeline' -c user.name='SpecKit Azure Boards sync' commit -m 'chore: update ado.json [skip ci]'
+      git push origin "HEAD:$(Build.SourceBranch)"
+    displayName: Persist work item mapping
