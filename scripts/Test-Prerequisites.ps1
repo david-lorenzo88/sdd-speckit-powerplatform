@@ -78,7 +78,9 @@ if (Get-Command specify -ErrorAction SilentlyContinue) {
     $m = [regex]::Match($sv, 'CLI Version\D*([\d\.]+)')
     if ($m.Success) { Add-Result 'SpecKit (specify)' 'OK' $m.Groups[1].Value '' }
     else { Add-Result 'SpecKit (specify)' 'OK' 'Instalado' '' }
-} else { Add-Result 'SpecKit (specify)' 'FALTA' 'No encontrado' 'uv tool install specify-cli' }
+} elseif ((Get-Command uv -ErrorAction SilentlyContinue) -and ((& uv tool list 2>$null) -join ' ') -match 'specify-cli') {
+    Add-Result 'SpecKit (specify)' 'FALTA' 'Instalado con uv pero fuera del PATH' 'uv tool update-shell y abre una terminal nueva'
+} else { Add-Result 'SpecKit (specify)' 'FALTA' 'No encontrado' 'uv tool install specify-cli; uv tool update-shell' }
 
 # Extensiones de VS Code
 if (Get-Command code -ErrorAction SilentlyContinue) {

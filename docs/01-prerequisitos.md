@@ -79,6 +79,12 @@ pa --version
 
 ```powershell
 uv tool install specify-cli
+uv tool update-shell          # añade la carpeta de herramientas de uv al PATH
+```
+
+**Cierra la terminal y abre una nueva** y comprueba:
+
+```powershell
 specify version
 ```
 
@@ -160,6 +166,7 @@ Comprueba también en VS Code que los plugins están cargados:
 | Síntoma | Solución |
 |---|---|
 | `xxx no se reconoce como nombre de cmdlet` justo después de instalar | Cierra y abre la terminal. El PATH se carga al abrirla. |
+| `specify` no se reconoce aunque se instaló | Ejecuta `uv tool update-shell` y abre una terminal nueva (también VS Code). Para la sesión actual basta con `$env:Path += ";$(uv tool dir --bin)"`. |
 | `copilot` no arranca o se queja de la versión de PowerShell | Usa PowerShell 7 (`pwsh`), no Windows PowerShell 5.1. |
 | `winget` no existe | Instala **App Installer** desde Microsoft Store. |
 | El script no se ejecuta por la política de ejecución | Lánzalo con `powershell -ExecutionPolicy Bypass -File ...` |

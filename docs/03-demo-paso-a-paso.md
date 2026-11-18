@@ -236,6 +236,7 @@ pac solution export --name SolicitudesContacto --path out\SolicitudesContacto.zi
 
 | Síntoma | Solución |
 |---|---|
+| `specify` no se reconoce como comando | `uv tool update-shell` y abre una terminal nueva (también VS Code). Ver [docs/01](01-prerequisitos.md#problemas-frecuentes). |
 | No aparecen los comandos `/speckit-*` | Revisa que `specify init` se ejecutó con `--integration copilot` y reinicia VS Code. |
 | El agente no usa las skills de Power Platform | Repite el paso 7 de [docs/01](01-prerequisitos.md) y menciona en el prompt el plugin que debe usar. |
 | `pa app push` falla con "Code app operations are disabled" | Habilita Code Apps en el entorno ([docs/02](02-entorno-power-platform.md), paso 2). |

@@ -85,7 +85,11 @@ Update-SessionPath
 # 3. SpecKit
 if (Test-Cmd 'specify') { Invoke-Step 'Actualizar SpecKit' { uv tool install --force specify-cli } }
 else { Invoke-Step 'Instalar SpecKit' { uv tool install specify-cli } }
+# uv instala las herramientas en una carpeta que no siempre está en el PATH: la añadimos de forma permanente
+Invoke-Step 'Añadir la carpeta de herramientas de uv al PATH (uv tool update-shell)' { uv tool update-shell }
 Update-SessionPath
+try { $uvBin = (& uv tool dir --bin 2>$null) } catch { $uvBin = $null }
+if ($uvBin -and ($env:Path -notlike "*$uvBin*")) { $env:Path += ";$uvBin" }
 
 # 4. Extensiones de VS Code
 if (Test-Cmd 'code') {
